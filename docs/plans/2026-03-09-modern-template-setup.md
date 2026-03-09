@@ -4,7 +4,7 @@
 
 **Goal:** Wire up a reusable Next.js 16 starter with Drizzle + Neon + Better-Auth (email/password) + shadcn/ui, ending with a working sign-in → dashboard flow.
 
-**Architecture:** App Router with route groups `(auth)` and `(dashboard)`. Better-Auth handles sessions via a catch-all API route. Middleware protects dashboard routes. Drizzle talks to Neon over the serverless HTTP driver.
+**Architecture:** App Router with route groups `(auth)` and `(dashboard)`. Better-Auth handles sessions via a catch-all API route. `src/proxy.ts` (Next.js 16's renamed middleware, Node.js runtime) protects dashboard routes. Drizzle talks to Neon over the serverless HTTP driver.
 
 **Tech Stack:** Next.js 16, TypeScript strict, Drizzle ORM + drizzle-kit, Neon serverless, Better-Auth v1, shadcn/ui, Tailwind v4.
 
@@ -363,18 +363,20 @@ git commit -m "feat: add better-auth api route handler"
 
 ---
 
-## Task 11: Add middleware to protect routes
+## Task 11: Add proxy to protect routes
+
+> **Note:** In Next.js 16, `middleware.ts` was renamed to `proxy.ts` and the exported function renamed from `middleware` to `proxy`. The `config` + `matcher` API is unchanged.
 
 **Files:**
-- Create: `src/middleware.ts`
+- Create: `src/proxy.ts`
 
-**Step 1: Write src/middleware.ts**
+**Step 1: Write src/proxy.ts**
 
 ```ts
 import { NextRequest, NextResponse } from "next/server";
 import { getSessionCookie } from "better-auth/cookies";
 
-export async function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const sessionCookie = getSessionCookie(request);
 
   if (!sessionCookie) {
@@ -392,8 +394,8 @@ export const config = {
 **Step 2: Commit**
 
 ```bash
-git add src/middleware.ts
-git commit -m "feat: add auth middleware for dashboard routes"
+git add src/proxy.ts
+git commit -m "feat: add proxy for dashboard route protection"
 ```
 
 ---

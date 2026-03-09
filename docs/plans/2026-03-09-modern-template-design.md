@@ -29,6 +29,7 @@ src/
       dashboard/page.tsx
     api/
       auth/[...all]/route.ts
+    globals.css
     layout.tsx
     page.tsx
   components/
@@ -39,7 +40,7 @@ src/
   lib/
     auth.ts                   # Better-Auth server config
     auth-client.ts            # Better-Auth browser client
-  middleware.ts
+  proxy.ts
 .env.example
 drizzle.config.ts
 ```
@@ -55,7 +56,7 @@ drizzle.config.ts
 - `src/lib/auth.ts` — Better-Auth server instance, email/password plugin, Drizzle adapter
 - `src/lib/auth-client.ts` — `createAuthClient()` for client components
 - `src/app/api/auth/[...all]/route.ts` — `{ GET, POST } = auth.handler`
-- `src/middleware.ts` — protects `/dashboard/*`, redirects unauthenticated to `/sign-in`
+- `src/proxy.ts` — protects `/dashboard/*`, redirects unauthenticated to `/sign-in` (Next.js 16: `middleware.ts` renamed to `proxy.ts`, runs on Node.js runtime)
 
 ## UI
 
