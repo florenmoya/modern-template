@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 
 export default function SignUpPage() {
+  const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,12 +26,13 @@ export default function SignUpPage() {
       name,
       email,
       password,
-      callbackURL: "/dashboard",
     });
 
     if (error) {
       setError(error.message ?? "Sign up failed");
       setLoading(false);
+    } else {
+      router.push("/dashboard");
     }
   }
 
